@@ -11,7 +11,14 @@
             --btn-orange: #ff6600; --btn-blue: #3366ff;
             --success: #28a745; --danger: #dc3545;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+        
+        /* Cho phép học viên chọn văn bản và nhập liệu bình thường trong các ô Input */
+        input, select, textarea { 
+            user-select: text !important; 
+            -webkit-user-select: text !important; 
+        }
+
         body { 
             background-color: #000;
             background-size: cover;
@@ -144,23 +151,20 @@
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.1);
         }
 
-        .score-circle::before {
-            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
-            border-radius: 50%; border: 2px solid transparent; animation: rotateRing 2s linear infinite;
-        }
+        .score-circle.score-digital-pass::before { content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; border: 2px solid transparent; border-top-color: #2ecc71; border-right-color: #2ecc71; animation: rotateRing 2s linear infinite; }
+        .score-circle.score-digital-fail::before { content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; border: 2px solid transparent; border-top-color: #e74c3c; border-right-color: #e74c3c; animation: rotateRing 2s linear infinite; }
         @keyframes rotateRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         #res-score { font-size: 1.5rem; font-weight: 900; line-height: 1; }
         .score-digital-pass { color: #2ecc71 !important; text-shadow: 0 0 15px rgba(46, 204, 113, 0.8); }
-        .score-digital-pass::before { border-top-color: #2ecc71; border-right-color: #2ecc71; }
         .score-digital-fail { color: #e74c3c !important; text-shadow: 0 0 15px rgba(231, 76, 60, 0.8); }
-        .score-digital-fail::before { border-top-color: #e74c3c; border-right-color: #e74c3c; }
 
         .status-badge { display: inline-block; padding: 10px 40px; border-radius: 50px; color: white; font-weight: 800; margin-bottom: 25px; font-size: 1.2rem; }
         .disclaimer-box { background: rgba(255, 255, 255, 0.4); color: #d32f2f; padding: 18px; border-radius: 15px; font-weight: 800; font-size: 0.9rem; border: 1px dashed #d32f2f; margin: 20px 0; }
-        
+         
         .sidebar-right > div { padding: 20px; }
 
+        /* Tối ưu hóa đặc biệt Responsive cho điện thoại di động */
         @media (max-width: 900px) { 
             #quiz-screen { 
                 grid-template-columns: 1fr; 
@@ -172,11 +176,16 @@
                 min-height: auto; 
                 margin-bottom: 10px;
             } 
+            /* Sửa lỗi đè layout: Thu nhỏ và dịch chuyển thanh Timer hợp lý trên mobile */
             .timer-floating { 
                 font-size: 1rem; 
                 padding: 6px 12px; 
                 top: 5px; 
                 right: 5px; 
+                border-radius: 8px;
+            }
+            #ai-container {
+                margin-top: 35px !important; /* Tránh đè lên khu vực có Timer */
             }
             .sidebar-right { width: 100%; }
             #nav-grid {
@@ -187,6 +196,14 @@
                 height: 35px !important;
                 font-size: 14px;
             }
+            .action-buttons {
+                flex-direction: column !important;
+                gap: 10px !important;
+            }
+            .option-item {
+                padding: 14px !important;
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>
@@ -196,6 +213,7 @@
         <h1 style="font-size: 80px;">⚠️</h1>
         <h2>CẢNH BÁO VI PHẠM!</h2>
         <div id="cheat-count-msg" style="margin-top: 15px; font-size: 1.5rem; font-weight: 800;"></div>
+        <p style="margin-top: 10px; font-weight: 600;">Học viên vui lòng quay lại màn hình làm bài ngay!</p>
     </div>
 
     <div id="confirm-modal-overlay">
@@ -300,10 +318,14 @@
     let currentQuestionIndex = 0, timeLeft = 1200, timerInterval, isSubmitted = false, cheatCount = 0;
     const synth = window.speechSynthesis;
     let isVoiceEnabled = true;
+    let speechTimeout = null; 
 
     function stopSpeaking() {
         if (synth) {
             synth.cancel();
+        }
+        if (speechTimeout) {
+            clearTimeout(speechTimeout);
         }
         const waves = document.getElementById('ai-waves');
         if (waves) {
@@ -376,7 +398,7 @@
         stopSpeaking();
         const msg = new SpeechSynthesisUtterance();
         msg.lang = 'vi-VN';
-        msg.text = (count < 3) ? `Cảnh báo lần ${count}! Học viên không được thoát bài thi` : "vi phạm quá 3 lần, hệ thống tự động nộp bài!";
+        msg.text = (count < 3) ? `Cảnh báo lần ${count}! Học viên không được thoát khỏi màn hình bài thi.` : "Học viên vi phạm quá 3 lần, hệ thống tự động nộp bài!";
         synth.speak(msg);
     }
 
@@ -423,9 +445,19 @@
         try {
             const res = await fetch(`${WEB_APP_URL}?action=checkCode&code=${encodeURIComponent(maThi)}&name=${encodeURIComponent(name.toUpperCase())}&ngheName=${encodeURIComponent(finalNghe)}`);
             const result = await res.json();
-            if(result.isValid) startQuiz(); 
-            else { alert(result.message || "Mã thi sai!"); btn.disabled = false; btn.innerText = "VÀO THI NGAY ➔"; }
-        } catch(e) { alert("Lỗi kết nối hệ thống!"); btn.disabled = false; btn.innerText = "VÀO THI NGAY ➔"; }
+            if(result.isValid) {
+                // Kích hoạt kích phát âm thanh ngay tại User Gesture (Sửa lỗi chặn tiếng trên Mobile)
+                if (isVoiceEnabled && synth) {
+                    const dummyUtter = new SpeechSynthesisUtterance("");
+                    synth.speak(dummyUtter);
+                }
+                startQuiz(); 
+            } else { 
+                alert(result.message || "Mã thi sai!"); btn.disabled = false; btn.innerText = "VÀO THI NGAY ➔"; 
+            }
+        } catch(e) { 
+            alert("Lỗi kết nối hệ thống!"); btn.disabled = false; btn.innerText = "VÀO THI NGAY ➔"; 
+        }
     }
 
     function startQuiz() {
@@ -459,7 +491,7 @@
                     <span style="color: var(--btn-orange);">GIẢI THÍCH:</span><br>${q.explanation}
                  </div>`;
         
-        html += `<div style="display:flex; justify-content:space-between; margin-top:20px; gap:15px;">
+        html += `<div class="action-buttons" style="display:flex; justify-content:space-between; margin-top:20px; gap:15px;">
                     <button class="btn-start" style="background:var(--btn-blue); flex:1;" onclick="showQuestion(${idx-1})" ${idx===0?'disabled':''}>Lùi lại</button>
                     <button class="btn-start" style="background:var(--btn-blue); flex:1;" onclick="showQuestion(${idx+1})" ${idx===29?'disabled':''}>Tiếp theo</button>
                  </div>`;
@@ -467,8 +499,10 @@
         renderGrid();
         updateProgressBar();
         
-        // Thêm độ trễ nhỏ để bộ lọc cancel âm thanh cũ chạy đồng bộ triệt để trước khi đọc câu mới
-        setTimeout(() => {
+        // Tự động cuộn mượt lên trên đầu trang khi sang câu mới (Sửa lỗi khuất giao diện trên Mobile)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        speechTimeout = setTimeout(() => {
             if (currentQuestionIndex === idx && !isSubmitted) {
                 aiSpeakQuestion(q);
             }
@@ -494,7 +528,7 @@
         
         showQuestion(qIdx);
         if(document.getElementById('modeToggle').checked) {
-            setTimeout(() => {
+            speechTimeout = setTimeout(() => {
                 aiSpeakExplanation(selectedQuestions[qIdx]);
             }, 150);
         }
@@ -537,6 +571,8 @@
         clearInterval(timerInterval); 
         stopSpeaking();
         
+        document.getElementById('warning-overlay').style.display = 'none';
+        
         const submitBtn = document.getElementById('submitBtn');
         if (submitBtn) {
             submitBtn.disabled = true;
@@ -561,11 +597,16 @@
         
         const scoreCircle = document.querySelector('.score-circle');
         const badge = document.getElementById('res-badge');
+        
         if (status === "ĐẠT") {
-            if(scoreCircle) scoreCircle.className = 'score-circle score-digital-pass';
+            if(scoreCircle) {
+                scoreCircle.className = 'score-circle score-digital-pass';
+            }
             if(badge) badge.style.backgroundColor = "#28a745";
         } else {
-            if(scoreCircle) scoreCircle.className = 'score-circle score-digital-fail';
+            if(scoreCircle) {
+                scoreCircle.className = 'score-circle score-digital-fail';
+            }
             if(badge) badge.style.backgroundColor = "#dc3545";
         }
         if(badge) badge.innerText = score10 + " ĐIỂM";
@@ -590,6 +631,7 @@
         }, 1000);
     }
 
+    // Logic kiểm soát trạng thái ẩn/hiện trang
     document.addEventListener("visibilitychange", function() {
         const quizScreen = document.getElementById('quiz-screen'); 
         if (document.visibilityState === 'hidden' && quizScreen.style.display === 'grid' && !isSubmitted) {
@@ -603,7 +645,17 @@
         }
     });
 
-    window.onfocus = () => { if (cheatCount < 3) document.getElementById('warning-overlay').style.display = 'none'; };
+    window.onfocus = () => { 
+        // Khi quay trở lại màn hình thi, dừng âm thanh cảnh báo lỗi và ẩn giao diện cảnh báo (nếu chưa bị nộp bài)
+        if (!isSubmitted && cheatCount < 3) {
+            stopSpeaking();
+            document.getElementById('warning-overlay').style.display = 'none';
+            // Đọc lại câu hỏi hiện tại cho học viên
+            if(selectedQuestions[currentQuestionIndex]) {
+                aiSpeakQuestion(selectedQuestions[currentQuestionIndex]);
+            }
+        }
+    };
 </script>
 </body>
 </html>
