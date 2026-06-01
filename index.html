@@ -228,7 +228,7 @@
             <input type="text" id="studentName" placeholder="HỌ VÀ TÊN HỌC VIÊN" class="form-control" style="text-transform: uppercase;" autocomplete="off">
             <input type="text" id="studentDOB" placeholder="Ngày sinh: (VD: 12/4/2000)" class="form-control" autocomplete="off">
             <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <input type="text" id="khoaThi" value="Tháng 6/2026" class="form-control" style="flex: 1.5; background: #eee; font-weight: bold;" readonly>
+                <input type="text" id="khoaThi" value="Tháng 8/2026" class="form-control" style="flex: 1.5; background: #eee; font-weight: bold;" readonly>
                 <input type="password" id="maThi" placeholder="Mã thi" class="form-control" style="flex: 1;" autocomplete="off">
             </div>
             <div style="display:flex; align-items:center; margin: 15px 0; justify-content: center; gap:10px; background: rgba(227, 242, 253, 0.8); padding: 10px; border-radius: 10px;">
@@ -257,7 +257,7 @@
         </div>
         <div class="progress-container">
             <div class="progress-bar-bg"><div id="progress-fill"></div></div>
-            <div id="progress-text">0/25</div>
+            <div id="progress-text">0/30</div>
         </div>
     </div>
 
@@ -282,7 +282,7 @@
         </div>
             <div class="score-circle">
                 <span id="res-score">0</span>
-                <small>/ 25 câu</small>
+                <small>/ 30 câu</small>
             </div>
             <div id="res-badge" class="status-badge">0.0 ĐIỂM</div>
             <div id="res-disclaimer" class="disclaimer-box">
@@ -302,9 +302,12 @@
     let isVoiceEnabled = true;
 
     function stopSpeaking() {
-        synth.cancel();
-        if(document.getElementById('ai-waves')) {
-            document.getElementById('ai-waves').style.display = 'none';
+        if (synth) {
+            synth.cancel();
+        }
+        const waves = document.getElementById('ai-waves');
+        if (waves) {
+            waves.style.display = 'none';
         }
     }
 
@@ -314,11 +317,11 @@
         const icon = document.getElementById('voice-icon');
         
         if (isVoiceEnabled) {
-            btn.classList.remove('muted');
-            icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+            if(btn) btn.classList.remove('muted');
+            if(icon) icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
         } else {
-            btn.classList.add('muted');
-            icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+            if(btn) btn.classList.add('muted');
+            if(icon) icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
             stopSpeaking(); 
         }
     }
@@ -335,9 +338,15 @@
 
         const utter = new SpeechSynthesisUtterance(textToRead);
         utter.lang = 'vi-VN';
-        utter.rate = 1.1; 
-        utter.onstart = () => { document.getElementById('ai-waves').style.display = 'flex'; };
-        utter.onend = () => { document.getElementById('ai-waves').style.display = 'none'; };
+        utter.rate = 1.05; 
+        utter.onstart = () => { 
+            const waves = document.getElementById('ai-waves');
+            if(waves) waves.style.display = 'flex'; 
+        };
+        utter.onend = () => { 
+            const waves = document.getElementById('ai-waves');
+            if(waves) waves.style.display = 'none'; 
+        };
         synth.speak(utter);
     }
 
@@ -348,9 +357,15 @@
         const textToRead = `Đáp án đúng là ${qObj.answer}. Giải thích: ${qObj.explanation}`;
         const utter = new SpeechSynthesisUtterance(textToRead);
         utter.lang = 'vi-VN';
-        utter.rate = 1.1;
-        utter.onstart = () => { document.getElementById('ai-waves').style.display = 'flex'; };
-        utter.onend = () => { document.getElementById('ai-waves').style.display = 'none'; };
+        utter.rate = 1.05;
+        utter.onstart = () => { 
+            const waves = document.getElementById('ai-waves');
+            if(waves) waves.style.display = 'flex'; 
+        };
+        utter.onend = () => { 
+            const waves = document.getElementById('ai-waves');
+            if(waves) waves.style.display = 'none'; 
+        };
         synth.speak(utter);
     }
 
@@ -395,11 +410,12 @@
     async function validateAndStart() {
         const maThi = document.getElementById('maThi').value.trim();
         const name = document.getElementById('studentName').value.trim();
+        const dob = document.getElementById('studentDOB').value.trim();
         const nghe = document.getElementById('jobType').options[document.getElementById('jobType').selectedIndex].text;
         const isOnTap = document.getElementById('modeToggle').checked;
         const finalNghe = isOnTap ? nghe + " (ÔN TẬP)" : nghe;
 
-        if(!name || !maThi) return alert("Nhập đủ thông tin!");
+        if(!name || !maThi || !dob) return alert("Vui lòng nhập đầy đủ thông tin: Họ tên, Ngày sinh và Mã thi!");
         
         const btn = document.getElementById('btnStart');
         btn.disabled = true; btn.innerText = "XÁC THỰC...";
@@ -409,15 +425,15 @@
             const result = await res.json();
             if(result.isValid) startQuiz(); 
             else { alert(result.message || "Mã thi sai!"); btn.disabled = false; btn.innerText = "VÀO THI NGAY ➔"; }
-        } catch(e) { alert("Lỗi kết nối!"); btn.disabled = false; btn.innerText = "VÀO THI NGAY ➔"; }
+        } catch(e) { alert("Lỗi kết nối hệ thống!"); btn.disabled = false; btn.innerText = "VÀO THI NGAY ➔"; }
     }
 
     function startQuiz() {
         document.getElementById('display-name').innerText = document.getElementById('studentName').value.toUpperCase();
-        selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 25); 
+        selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 30); 
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('ai-container').style.display = 'flex';
-        document.getElementById('timer').style.display = 'inline-block'; // Đã sửa từ 'block' thành 'inline-block' để chuẩn CSS floating nhãn tròn
+        document.getElementById('timer').style.display = 'inline-block';
         document.getElementById('quiz-screen').style.display = 'grid';
         showQuestion(0);
         startTimer();
@@ -436,8 +452,7 @@
         
         q.options.forEach((opt, i) => {
             let cls = stored && labels[i] === stored.selectedLabel ? "selected" : "";
-            let safeOpt = opt.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-            html += `<div class="option-item ${cls}" onclick="selectAns(${idx}, '${labels[i]}', '${safeOpt}')"><b>${labels[i]}.</b> ${opt}</div>`;
+            html += `<div class="option-item ${cls}" onclick="handleSelect(${idx}, '${labels[i]}', ${i})"><b>${labels[i]}.</b> ${opt}</div>`;
         });
 
         html += `<div id="explanation-box" style="${(isOnTap && stored) ? 'display:block' : 'display:none'}">
@@ -446,12 +461,24 @@
         
         html += `<div style="display:flex; justify-content:space-between; margin-top:20px; gap:15px;">
                     <button class="btn-start" style="background:var(--btn-blue); flex:1;" onclick="showQuestion(${idx-1})" ${idx===0?'disabled':''}>Lùi lại</button>
-                    <button class="btn-start" style="background:var(--btn-blue); flex:1;" onclick="showQuestion(${idx+1})" ${idx===24?'disabled':''}>Tiếp theo</button>
+                    <button class="btn-start" style="background:var(--btn-blue); flex:1;" onclick="showQuestion(${idx+1})" ${idx===29?'disabled':''}>Tiếp theo</button>
                  </div>`;
         document.getElementById('quiz-content').innerHTML = html;
         renderGrid();
         updateProgressBar();
-        aiSpeakQuestion(q);
+        
+        // Thêm độ trễ nhỏ để bộ lọc cancel âm thanh cũ chạy đồng bộ triệt để trước khi đọc câu mới
+        setTimeout(() => {
+            if (currentQuestionIndex === idx && !isSubmitted) {
+                aiSpeakQuestion(q);
+            }
+        }, 150);
+    }
+
+    function handleSelect(qIdx, label, optionIdx) {
+        const targetQuestion = selectedQuestions[qIdx];
+        const ansText = targetQuestion.options[optionIdx];
+        selectAns(qIdx, label, ansText);
     }
 
     function selectAns(qIdx, label, ansText) {
@@ -467,24 +494,28 @@
         
         showQuestion(qIdx);
         if(document.getElementById('modeToggle').checked) {
-            aiSpeakExplanation(selectedQuestions[qIdx]);
+            setTimeout(() => {
+                aiSpeakExplanation(selectedQuestions[qIdx]);
+            }, 150);
         }
     }
 
     function updateProgressBar() {
         const completed = studentAnswers.length;
-        document.getElementById('progress-fill').style.width = (completed / 25 * 100) + "%";
-        document.getElementById('progress-text').innerText = completed + "/25";
+        document.getElementById('progress-fill').style.width = (completed / 30 * 100) + "%";
+        document.getElementById('progress-text').innerText = completed + "/30";
     }
 
     function renderGrid() {
-        const grid = document.getElementById('nav-grid'); grid.innerHTML = "";
+        const grid = document.getElementById('nav-grid'); 
+        let gridHtml = ""; 
         selectedQuestions.forEach((_, i) => {
             const hasAns = studentAnswers.some(a => a.qIndex === i);
             const active = i === currentQuestionIndex ? 'border:3px solid var(--btn-orange);' : '';
             const bg = hasAns ? 'background:var(--caee-blue); color:white;' : 'background:rgba(0,0,0,0.05);';
-            grid.innerHTML += `<div onclick="showQuestion(${i})" style="height:40px; display:flex; justify-content:center; align-items:center; border-radius:8px; cursor:pointer; font-weight:bold; ${bg} ${active}">${i+1}</div>`;
+            gridHtml += `<div onclick="showQuestion(${i})" style="height:40px; display:flex; justify-content:center; align-items:center; border-radius:8px; cursor:pointer; font-weight:bold; ${bg} ${active}">${i+1}</div>`;
         });
+        grid.innerHTML = gridHtml;
     }
 
     function startTimer() {
@@ -506,8 +537,11 @@
         clearInterval(timerInterval); 
         stopSpeaking();
         
-        document.getElementById('submitBtn').disabled = true;
-        document.getElementById('submitBtn').innerText = "ĐANG LƯU...";
+        const submitBtn = document.getElementById('submitBtn');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerText = "ĐANG LƯU...";
+        }
         
         let score = 0;
         selectedQuestions.forEach((q, i) => {
@@ -515,12 +549,12 @@
             if(ans && ans.selectedLabel === q.answer) score++;
         });
 
-        const score10 = parseFloat((score * 0.4).toFixed(1));
-        const status = score >= 21 ? "ĐẠT" : "KHÔNG ĐẠT";
+        const score10 = parseFloat((score * (10 / 30)).toFixed(1));
+        const status = score >= 25 ? "ĐẠT" : "KHÔNG ĐẠT"; 
         const jobName = document.getElementById('jobType').options[document.getElementById('jobType').selectedIndex].text;
         const isOnTap = document.getElementById('modeToggle').checked;
         
-        document.getElementById('res-name').innerText = document.getElementById('studentName').value;
+        document.getElementById('res-name').innerText = document.getElementById('studentName').value.toUpperCase();
         document.getElementById('res-dob').innerText = document.getElementById('studentDOB').value || "Chưa nhập";
         document.getElementById('res-id').innerText = document.getElementById('khoaThi').value;
         document.getElementById('res-score').innerText = score;
@@ -528,20 +562,20 @@
         const scoreCircle = document.querySelector('.score-circle');
         const badge = document.getElementById('res-badge');
         if (status === "ĐẠT") {
-            scoreCircle.className = 'score-circle score-digital-pass';
-            badge.style.backgroundColor = "#28a745";
+            if(scoreCircle) scoreCircle.className = 'score-circle score-digital-pass';
+            if(badge) badge.style.backgroundColor = "#28a745";
         } else {
-            scoreCircle.className = 'score-circle score-digital-fail';
-            badge.style.backgroundColor = "#dc3545";
+            if(scoreCircle) scoreCircle.className = 'score-circle score-digital-fail';
+            if(badge) badge.style.backgroundColor = "#dc3545";
         }
-        badge.innerText = score10 + " ĐIỂM";
+        if(badge) badge.innerText = score10 + " ĐIỂM";
         document.getElementById('result-screen').style.display = 'flex';
 
         const formData = new URLSearchParams();
         formData.append('maThi', document.getElementById('maThi').value.trim());
         formData.append('name', document.getElementById('studentName').value.toUpperCase());
         formData.append('birthDate', document.getElementById('studentDOB').value);
-        formData.append('score', score + "/25");
+        formData.append('score', score + "/30");
         formData.append('status', status);
         formData.append('viPham', cheatCount);
         formData.append('ngheName', isOnTap ? jobName + " (ÔN TẬP)" : jobName);
