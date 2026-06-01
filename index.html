@@ -13,7 +13,6 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
         
-        /* Cho phép học viên chọn văn bản và nhập liệu bình thường trong các ô Input */
         input, select, textarea { 
             user-select: text !important; 
             -webkit-user-select: text !important; 
@@ -30,26 +29,16 @@
             transition: background-image 0.5s ease-in-out;
         }
 
-        /* Nút Tắt/Mở AI */
         .ai-toggle-btn {
-            background: white;
-            border: 2px solid var(--btn-orange);
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            background: white; border: 2px solid var(--btn-orange); border-radius: 50%;
+            width: 35px; height: 35px; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         .ai-toggle-btn:hover { transform: scale(1.1); }
         .ai-toggle-btn.muted { border-color: #999; background: #f0f0f0; }
         .ai-toggle-btn svg { width: 20px; height: 20px; fill: var(--btn-orange); }
         .ai-toggle-btn.muted svg { fill: #999; }
 
-        /* Hình nền cho từng nghề */
         .bg-xe-nang { background-image: url('https://raw.githubusercontent.com/phamhoan-caee/trac-nghiem-8.5.26/main/bg-xe-nang.jpg'); }
         .bg-can-truc { background-image: url('https://raw.githubusercontent.com/phamhoan-caee/trac-nghiem-8.5.26/main/bg-can-truc.jpg'); }
         .bg-cau-truc { background-image: url('https://raw.githubusercontent.com/phamhoan-caee/trac-nghiem-8.5.26/main/bg-cau-truc.jpg'); }
@@ -57,19 +46,16 @@
         .bg-may-rai { background-image: url('https://raw.githubusercontent.com/phamhoan-caee/DE-T-HI-10.5.26/main/bg-may-rai.jpg'); }
 
         .welcome-container, #quiz-content, .sidebar-right > div, #ai-container, .confirm-modal-content {
-            background: rgba(255, 255, 255, 0.55) !important;
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
+            background: rgba(255, 255, 255, 0.6) !important;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
             border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         #ai-container {
             display: none; max-width: 1300px; margin: 10px auto; 
             padding: 12px 20px; align-items: center; gap: 15px; 
-            border-left: 8px solid var(--btn-orange);
-            flex-wrap: wrap;
+            border-left: 8px solid var(--btn-orange); flex-wrap: wrap;
         }
 
         .progress-container { width: 100%; margin-top: 10px; display: flex; align-items: center; gap: 10px; }
@@ -84,8 +70,8 @@
         .confirm-modal-content { width: 90%; max-width: 400px; padding: 30px; text-align: center; }
 
         .ai-avatar {
-            position: relative; width: 65px; height: 65px; 
-            border-radius: 50%; border: 2px solid #ddd; overflow: hidden; flex-shrink: 0;
+            position: relative; width: 65px; height: 65px; border-radius: 50%; 
+            border: 2px solid #ddd; overflow: hidden; flex-shrink: 0;
         }
         .ai-avatar img { width: 100%; height: 100%; object-fit: cover; }
          
@@ -97,10 +83,9 @@
         @keyframes wave-anim { 0%, 100% { height: 5px; } 50% { height: 15px; } }
 
         .timer-floating {
-            position: fixed; top: 10px; right: 10px;
-            background: #ff3333; color: white; padding: 10px 20px; border-radius: 50px;
-            font-weight: 900; font-size: 1.3rem; border: 2px solid white;
-            z-index: 2000; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: fixed; top: 10px; right: 10px; background: #ff3333; color: white; 
+            padding: 10px 20px; border-radius: 50px; font-weight: 900; font-size: 1.3rem; 
+            border: 2px solid white; z-index: 2000; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         #start-screen { min-height: 90vh; display: flex; justify-content: center; align-items: center; }
@@ -110,14 +95,14 @@
         .btn-start:disabled { background: #999 !important; cursor: not-allowed; }
          
         #quiz-screen { padding: 15px; display: none; grid-template-columns: 1fr 320px; gap: 20px; max-width: 1300px; margin: auto; }
-        #quiz-content { padding: 25px; min-height: 400px; }
+        #quiz-content { padding: 25px; min-height: 400px; touch-action: manipulation; }
          
         .option-item { border: 2px solid #eee; border-radius: 8px; padding: 18px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; font-weight: 600; color: #333; }
         .option-item.selected { border-color: var(--btn-blue); background: #eef2ff; }
 
         #explanation-box {
             display: none; margin-top: 15px; padding: 15px;
-            background: rgba(40, 167, 69, 0.1); border-left: 5px solid var(--success);
+            background: rgba(40, 167, 69, 0.15); border-left: 5px solid var(--success);
             border-radius: 8px; font-weight: 600; color: #155724; animation: fadeIn 0.4s;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -129,17 +114,15 @@
         }
 
         #result-screen { 
-            display: none; position: fixed; top:0; left:0; 
-            width:100%; height:100%; background: rgba(0, 0, 0, 0.7); 
-            z-index: 9999; justify-content: center; align-items: center; padding: 20px; 
+            display: none; position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: rgba(0, 0, 0, 0.7); z-index: 9999; justify-content: center; 
+            align-items: center; padding: 20px; 
         }
 
         .result-card { 
-            background: rgba(255, 255, 255, 0.85) !important; 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(10px);
-            width: 100%; max-width: 450px; border-radius: 25px; 
-            padding: 30px; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); 
-            border: 1px solid rgba(255, 255, 255, 0.3); animation: slideUp 0.5s ease-out;
+            background: rgba(255, 255, 255, 0.85) !important; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(10px);
+            width: 100%; max-width: 450px; border-radius: 25px; padding: 30px; text-align: center; 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); animation: slideUp 0.5s ease-out;
         }
 
         @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -147,8 +130,7 @@
         .score-circle { 
             width: 160px; height: 160px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.1); 
             margin: 20px auto; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: rgba(0, 0, 0, 0.2); position: relative;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.1);
+            background: rgba(0, 0, 0, 0.2); position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.1);
         }
 
         .score-circle.score-digital-pass::before { content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; border: 2px solid transparent; border-top-color: #2ecc71; border-right-color: #2ecc71; animation: rotateRing 2s linear infinite; }
@@ -164,46 +146,16 @@
          
         .sidebar-right > div { padding: 20px; }
 
-        /* Tối ưu hóa đặc biệt Responsive cho điện thoại di động */
         @media (max-width: 900px) { 
-            #quiz-screen { 
-                grid-template-columns: 1fr; 
-                padding: 10px;
-                gap: 10px;
-            } 
-            #quiz-content { 
-                padding: 15px; 
-                min-height: auto; 
-                margin-bottom: 10px;
-            } 
-            /* Sửa lỗi đè layout: Thu nhỏ và dịch chuyển thanh Timer hợp lý trên mobile */
-            .timer-floating { 
-                font-size: 1rem; 
-                padding: 6px 12px; 
-                top: 5px; 
-                right: 5px; 
-                border-radius: 8px;
-            }
-            #ai-container {
-                margin-top: 35px !important; /* Tránh đè lên khu vực có Timer */
-            }
+            #quiz-screen { grid-template-columns: 1fr; padding: 10px; gap: 10px; } 
+            #quiz-content { padding: 15px; min-height: auto; margin-bottom: 10px; } 
+            .timer-floating { font-size: 1rem; padding: 6px 12px; top: 5px; right: 5px; border-radius: 8px; }
+            #ai-container { margin-top: 40px !important; }
             .sidebar-right { width: 100%; }
-            #nav-grid {
-                grid-template-columns: repeat(5, 1fr);
-                gap: 5px;
-            }
-            #nav-grid div {
-                height: 35px !important;
-                font-size: 14px;
-            }
-            .action-buttons {
-                flex-direction: column !important;
-                gap: 10px !important;
-            }
-            .option-item {
-                padding: 14px !important;
-                font-size: 0.95rem;
-            }
+            #nav-grid { grid-template-columns: repeat(5, 1fr); gap: 5px; }
+            #nav-grid div { height: 35px !important; font-size: 14px; }
+            .action-buttons { flex-direction: column !important; gap: 10px !important; }
+            .option-item { padding: 14px !important; font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -244,7 +196,10 @@
                 <option value="1389423018">VẬN HÀNH MÁY RẢI</option> 
             </select>
             <input type="text" id="studentName" placeholder="HỌ VÀ TÊN HỌC VIÊN" class="form-control" style="text-transform: uppercase;" autocomplete="off">
-            <input type="text" id="studentDOB" placeholder="Ngày sinh: (VD: 12/4/2000)" class="form-control" autocomplete="off">
+            
+            <label style="font-weight: bold; font-size: 0.85rem; color: #555;">NGÀY/THÁNG/NĂM SINH:</label>
+            <input type="date" id="studentDOB" class="form-control" autocomplete="off">
+            
             <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                 <input type="text" id="khoaThi" value="Tháng 8/2026" class="form-control" style="flex: 1.5; background: #eee; font-weight: bold;" readonly>
                 <input type="password" id="maThi" placeholder="Mã thi" class="form-control" style="flex: 1;" autocomplete="off">
@@ -293,11 +248,11 @@
     <div id="result-screen">
         <div class="result-card">
            <h2 style="color: var(--caee-blue); margin-bottom: 10px;">KẾT QUẢ THI</h2>
-        <div style="margin-bottom: 20px; line-height: 1.6; font-size: 1rem; text-align: center; color: #333;">
-               Học viên: <b id="res-name" style="text-transform: uppercase; color: var(--caee-blue); font-size: 1.1rem;">---</b><br>
-            Ngày sinh: <b id="res-dob">---</b><br>
-            Khóa thi: <b id="res-id" style="color: var(--caee-blue);">---</b>
-        </div>
+           <div style="margin-bottom: 20px; line-height: 1.6; font-size: 1rem; text-align: center; color: #333;">
+                Học viên: <b id="res-name" style="text-transform: uppercase; color: var(--caee-blue); font-size: 1.1rem;">---</b><br>
+                Ngày sinh: <b id="res-dob">---</b><br>
+                Khóa thi: <b id="res-id" style="color: var(--caee-blue);">---</b>
+           </div>
             <div class="score-circle">
                 <span id="res-score">0</span>
                 <small>/ 30 câu</small>
@@ -321,16 +276,10 @@
     let speechTimeout = null; 
 
     function stopSpeaking() {
-        if (synth) {
-            synth.cancel();
-        }
-        if (speechTimeout) {
-            clearTimeout(speechTimeout);
-        }
+        if (speechTimeout) clearTimeout(speechTimeout);
+        if (synth) synth.cancel();
         const waves = document.getElementById('ai-waves');
-        if (waves) {
-            waves.style.display = 'none';
-        }
+        if (waves) waves.style.display = 'none';
     }
 
     function toggleVoice() {
@@ -348,12 +297,12 @@
         }
     }
 
-    function aiSpeakQuestion(qObj) {
-        if (!isVoiceEnabled) return;
+    function aiSpeakQuestion(qObj, index) {
+        if (!isVoiceEnabled || isSubmitted) return;
         stopSpeaking(); 
         
         const labels = ['A', 'B', 'C', 'D'];
-        let textToRead = `Câu hỏi số ${currentQuestionIndex + 1}. ${qObj.question}. `;
+        let textToRead = `Câu hỏi số ${index + 1}. ${qObj.question}. `;
         qObj.options.forEach((opt, i) => {
             textToRead += `Đáp án ${labels[i]}: ${opt}. `;
         });
@@ -361,33 +310,21 @@
         const utter = new SpeechSynthesisUtterance(textToRead);
         utter.lang = 'vi-VN';
         utter.rate = 1.05; 
-        utter.onstart = () => { 
-            const waves = document.getElementById('ai-waves');
-            if(waves) waves.style.display = 'flex'; 
-        };
-        utter.onend = () => { 
-            const waves = document.getElementById('ai-waves');
-            if(waves) waves.style.display = 'none'; 
-        };
+        utter.onstart = () => { document.getElementById('ai-waves').style.display = 'flex'; };
+        utter.onend = () => { document.getElementById('ai-waves').style.display = 'none'; };
         synth.speak(utter);
     }
 
     function aiSpeakExplanation(qObj) {
-        if (!document.getElementById('modeToggle').checked || !isVoiceEnabled) return;
+        if (!document.getElementById('modeToggle').checked || !isVoiceEnabled || isSubmitted) return;
         stopSpeaking();
         
         const textToRead = `Đáp án đúng là ${qObj.answer}. Giải thích: ${qObj.explanation}`;
         const utter = new SpeechSynthesisUtterance(textToRead);
         utter.lang = 'vi-VN';
         utter.rate = 1.05;
-        utter.onstart = () => { 
-            const waves = document.getElementById('ai-waves');
-            if(waves) waves.style.display = 'flex'; 
-        };
-        utter.onend = () => { 
-            const waves = document.getElementById('ai-waves');
-            if(waves) waves.style.display = 'none'; 
-        };
+        utter.onstart = () => { document.getElementById('ai-waves').style.display = 'flex'; };
+        utter.onend = () => { document.getElementById('ai-waves').style.display = 'none'; };
         synth.speak(utter);
     }
 
@@ -432,13 +369,18 @@
     async function validateAndStart() {
         const maThi = document.getElementById('maThi').value.trim();
         const name = document.getElementById('studentName').value.trim();
-        const dob = document.getElementById('studentDOB').value.trim();
+        const dobInput = document.getElementById('studentDOB').value;
         const nghe = document.getElementById('jobType').options[document.getElementById('jobType').selectedIndex].text;
         const isOnTap = document.getElementById('modeToggle').checked;
         const finalNghe = isOnTap ? nghe + " (ÔN TẬP)" : nghe;
 
-        if(!name || !maThi || !dob) return alert("Vui lòng nhập đầy đủ thông tin: Họ tên, Ngày sinh và Mã thi!");
+        if(!name || !maThi || !dobInput) return alert("Vui lòng nhập đầy đủ thông tin: Họ tên, Ngày sinh và Mã thi!");
         
+        // Định dạng lại ngày hiển thị từ YYYY-MM-DD sang DD/MM/YYYY để lưu trữ đồng bộ
+        const d = new Date(dobInput);
+        const formattedDOB = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+        document.getElementById('studentDOB').dataset.formatted = formattedDOB;
+
         const btn = document.getElementById('btnStart');
         btn.disabled = true; btn.innerText = "XÁC THỰC...";
         
@@ -446,10 +388,8 @@
             const res = await fetch(`${WEB_APP_URL}?action=checkCode&code=${encodeURIComponent(maThi)}&name=${encodeURIComponent(name.toUpperCase())}&ngheName=${encodeURIComponent(finalNghe)}`);
             const result = await res.json();
             if(result.isValid) {
-                // Kích hoạt kích phát âm thanh ngay tại User Gesture (Sửa lỗi chặn tiếng trên Mobile)
                 if (isVoiceEnabled && synth) {
-                    const dummyUtter = new SpeechSynthesisUtterance("");
-                    synth.speak(dummyUtter);
+                    synth.speak(new SpeechSynthesisUtterance(""));
                 }
                 startQuiz(); 
             } else { 
@@ -472,6 +412,7 @@
     }
 
     function showQuestion(idx) {
+        if (speechTimeout) clearTimeout(speechTimeout);
         stopSpeaking(); 
         currentQuestionIndex = idx;
         const q = selectedQuestions[idx];
@@ -484,7 +425,7 @@
         
         q.options.forEach((opt, i) => {
             let cls = stored && labels[i] === stored.selectedLabel ? "selected" : "";
-            html += `<div class="option-item ${cls}" onclick="handleSelect(${idx}, '${labels[i]}', ${i})"><b>${labels[i]}.</b> ${opt}</div>`;
+            html += `<div class="option-item ${cls}" data-label="${labels[i]}" onclick="handleSelect(${idx}, '${labels[i]}', ${i}, this)"><b>${labels[i]}.</b> ${opt}</div>`;
         });
 
         html += `<div id="explanation-box" style="${(isOnTap && stored) ? 'display:block' : 'display:none'}">
@@ -499,25 +440,26 @@
         renderGrid();
         updateProgressBar();
         
-        // Tự động cuộn mượt lên trên đầu trang khi sang câu mới (Sửa lỗi khuất giao diện trên Mobile)
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
         speechTimeout = setTimeout(() => {
             if (currentQuestionIndex === idx && !isSubmitted) {
-                aiSpeakQuestion(q);
+                aiSpeakQuestion(q, idx);
             }
-        }, 150);
+        }, 200);
     }
 
-    function handleSelect(qIdx, label, optionIdx) {
+    function handleSelect(qIdx, label, optionIdx, element) {
+        if(isSubmitted) return;
+        if (speechTimeout) clearTimeout(speechTimeout);
+        stopSpeaking();
+
+        // Tối ưu UX: Đổi class lựa chọn ngay lập tức mà không cần render lại toàn bộ câu hỏi
+        const siblings = element.parentNode.querySelectorAll('.option-item');
+        siblings.forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+
         const targetQuestion = selectedQuestions[qIdx];
         const ansText = targetQuestion.options[optionIdx];
-        selectAns(qIdx, label, ansText);
-    }
-
-    function selectAns(qIdx, label, ansText) {
-        if(isSubmitted) return;
-        stopSpeaking(); 
+        
         const findIndex = studentAnswers.findIndex(a => a.qIndex === qIdx);
         if(findIndex > -1) {
             studentAnswers[findIndex].selectedLabel = label;
@@ -526,11 +468,15 @@
             studentAnswers.push({qIndex: qIdx, selectedLabel: label, selectedText: ansText});
         }
         
-        showQuestion(qIdx);
-        if(document.getElementById('modeToggle').checked) {
+        renderGrid();
+        updateProgressBar();
+
+        const isOnTap = document.getElementById('modeToggle').checked;
+        if(isOnTap) {
+            document.getElementById('explanation-box').style.display = 'block';
             speechTimeout = setTimeout(() => {
-                aiSpeakExplanation(selectedQuestions[qIdx]);
-            }, 150);
+                aiSpeakExplanation(targetQuestion);
+            }, 200);
         }
     }
 
@@ -589,9 +535,10 @@
         const status = score >= 25 ? "ĐẠT" : "KHÔNG ĐẠT"; 
         const jobName = document.getElementById('jobType').options[document.getElementById('jobType').selectedIndex].text;
         const isOnTap = document.getElementById('modeToggle').checked;
+        const dobShow = document.getElementById('studentDOB').dataset.formatted || "Chưa nhập";
         
         document.getElementById('res-name').innerText = document.getElementById('studentName').value.toUpperCase();
-        document.getElementById('res-dob').innerText = document.getElementById('studentDOB').value || "Chưa nhập";
+        document.getElementById('res-dob').innerText = dobShow;
         document.getElementById('res-id').innerText = document.getElementById('khoaThi').value;
         document.getElementById('res-score').innerText = score;
         
@@ -599,14 +546,10 @@
         const badge = document.getElementById('res-badge');
         
         if (status === "ĐẠT") {
-            if(scoreCircle) {
-                scoreCircle.className = 'score-circle score-digital-pass';
-            }
+            if(scoreCircle) scoreCircle.className = 'score-circle score-digital-pass';
             if(badge) badge.style.backgroundColor = "#28a745";
         } else {
-            if(scoreCircle) {
-                scoreCircle.className = 'score-circle score-digital-fail';
-            }
+            if(scoreCircle) scoreCircle.className = 'score-circle score-digital-fail';
             if(badge) badge.style.backgroundColor = "#dc3545";
         }
         if(badge) badge.innerText = score10 + " ĐIỂM";
@@ -615,7 +558,7 @@
         const formData = new URLSearchParams();
         formData.append('maThi', document.getElementById('maThi').value.trim());
         formData.append('name', document.getElementById('studentName').value.toUpperCase());
-        formData.append('birthDate', document.getElementById('studentDOB').value);
+        formData.append('birthDate', dobShow);
         formData.append('score', score + "/30");
         formData.append('status', status);
         formData.append('viPham', cheatCount);
@@ -631,7 +574,6 @@
         }, 1000);
     }
 
-    // Logic kiểm soát trạng thái ẩn/hiện trang
     document.addEventListener("visibilitychange", function() {
         const quizScreen = document.getElementById('quiz-screen'); 
         if (document.visibilityState === 'hidden' && quizScreen.style.display === 'grid' && !isSubmitted) {
@@ -646,13 +588,11 @@
     });
 
     window.onfocus = () => { 
-        // Khi quay trở lại màn hình thi, dừng âm thanh cảnh báo lỗi và ẩn giao diện cảnh báo (nếu chưa bị nộp bài)
         if (!isSubmitted && cheatCount < 3) {
             stopSpeaking();
             document.getElementById('warning-overlay').style.display = 'none';
-            // Đọc lại câu hỏi hiện tại cho học viên
             if(selectedQuestions[currentQuestionIndex]) {
-                aiSpeakQuestion(selectedQuestions[currentQuestionIndex]);
+                aiSpeakQuestion(selectedQuestions[currentQuestionIndex], currentQuestionIndex);
             }
         }
     };
