@@ -81,7 +81,7 @@
             border-radius: 50%; border: 2px solid #ddd; overflow: hidden; flex-shrink: 0;
         }
         .ai-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        
+         
         .speaking-waves {
             display: none; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
             gap: 3px; align-items: flex-end; height: 15px;
@@ -101,10 +101,10 @@
         .form-control { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; font-weight: 500; }
         .btn-start { background: var(--caee-blue); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: transform 0.2s; }
         .btn-start:disabled { background: #999 !important; cursor: not-allowed; }
-        
+         
         #quiz-screen { padding: 15px; display: none; grid-template-columns: 1fr 320px; gap: 20px; max-width: 1300px; margin: auto; }
         #quiz-content { padding: 25px; min-height: 400px; }
-        
+         
         .option-item { border: 2px solid #eee; border-radius: 8px; padding: 18px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; font-weight: 600; color: #333; }
         .option-item.selected { border-color: var(--btn-blue); background: #eef2ff; }
 
@@ -159,6 +159,8 @@
         .status-badge { display: inline-block; padding: 10px 40px; border-radius: 50px; color: white; font-weight: 800; margin-bottom: 25px; font-size: 1.2rem; }
         .disclaimer-box { background: rgba(255, 255, 255, 0.4); color: #d32f2f; padding: 18px; border-radius: 15px; font-weight: 800; font-size: 0.9rem; border: 1px dashed #d32f2f; margin: 20px 0; }
         
+        .sidebar-right > div { padding: 20px; }
+
         @media (max-width: 900px) { 
             #quiz-screen { 
                 grid-template-columns: 1fr; 
@@ -176,6 +178,7 @@
                 top: 5px; 
                 right: 5px; 
             }
+            .sidebar-right { width: 100%; }
             #nav-grid {
                 grid-template-columns: repeat(5, 1fr);
                 gap: 5px;
@@ -414,7 +417,7 @@
         selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 25); 
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('ai-container').style.display = 'flex';
-        document.getElementById('timer').style.display = 'block';
+        document.getElementById('timer').style.display = 'inline-block'; // Đã sửa từ 'block' thành 'inline-block' để chuẩn CSS floating nhãn tròn
         document.getElementById('quiz-screen').style.display = 'grid';
         showQuestion(0);
         startTimer();
@@ -432,7 +435,6 @@
         if(q.image) html += `<div style="text-align:center"><img src="${q.image}" style="max-width:100%; border-radius:12px; margin-bottom:15px; border:1px solid #ddd;"></div>`;
         
         q.options.forEach((opt, i) => {
-            // So khớp theo nhãn chữ cái (A, B, C, D) đã lưu
             let cls = stored && labels[i] === stored.selectedLabel ? "selected" : "";
             let safeOpt = opt.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
             html += `<div class="option-item ${cls}" onclick="selectAns(${idx}, '${labels[i]}', '${safeOpt}')"><b>${labels[i]}.</b> ${opt}</div>`;
@@ -510,13 +512,10 @@
         let score = 0;
         selectedQuestions.forEach((q, i) => {
             const ans = studentAnswers.find(a => a.qIndex === i);
-            // So khớp trực tiếp chữ cái lựa chọn (A, B, C, D) với chữ cái đáp án đúng
             if(ans && ans.selectedLabel === q.answer) score++;
         });
 
-        // Giữ cấu trúc 25 câu: Hệ điểm 10 = Số câu đúng * 0.4
         const score10 = parseFloat((score * 0.4).toFixed(1));
-        // ĐẠT khi đạt từ mốc từ 21 câu trở lên (>= 8.4 điểm)
         const status = score >= 21 ? "ĐẠT" : "KHÔNG ĐẠT";
         const jobName = document.getElementById('jobType').options[document.getElementById('jobType').selectedIndex].text;
         const isOnTap = document.getElementById('modeToggle').checked;
